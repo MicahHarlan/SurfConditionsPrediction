@@ -1,4 +1,4 @@
-# SurfConditionsPrediction
+# SurfForecast
 
 This program analyzes the wave data stored in the "waves.txt" file. It preprocesses the data, extracts features, and trains several machine learning models to predict whether a given wave is small, medium, or large. The models used in this program include a decision tree, k-nearest neighbors, naive Bayes, and a voting classifier that combines the predictions of the other three models.
 
