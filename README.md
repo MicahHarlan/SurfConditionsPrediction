@@ -10,3 +10,27 @@ Finally, the program outputs the mean cross-validation scores for each model, in
 
 
 This is an ongoing project. I eventually want the model to tell you how clean the waves are going to be. Ex.) "The waves today given x y and z are classified as fair with a height of 2-3ft." The conditions will be based off of surflines ranking for waves, like poor,fair,good and up.
+
+#LiveBouy 
+Description
+
+This code retrieves current data from the National Oceanic and Atmospheric Administration (NOAA) for spectral wave data from a buoy near a surf spot. It then cleans the data, creates a Pandas DataFrame, and plots the wave height over time. Additionally, the code prints out ideal conditions for surfing, as well as the current conditions for swell direction, swell period, wind, and wave height. Finally, the code retrieves air temperature data from another NOAA buoy.
+
+Requirements
+
+The following packages are required to run this code:
+numpy
+pandas
+matplotlib
+Usage
+
+Download the script to your local machine.
+Ensure that the required packages are installed on your machine.
+Run the script with live_bouy.py
+How It Works
+
+The script retrieves spectral wave data from a specific NOAA buoy in real-time using an HTTP request. It then processes and cleans the data, creates a Pandas DataFrame, and plots the wave height over time. The script also prints out the ideal conditions for surfing and the current conditions for swell direction, swell period, wind, and wave height. Finally, the script retrieves air temperature data from another NOAA buoy.
+
+#Known Issues
+
+None known at this time.
