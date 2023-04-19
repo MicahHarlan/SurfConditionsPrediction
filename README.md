@@ -1,3 +1,4 @@
+
 # SurfForecast
 
 This program analyzes the wave data stored in the "waves.txt" file. It preprocesses the data, extracts features, and trains several machine learning models to predict whether a given wave is small, medium, or large. The models used in this program include a decision tree, k-nearest neighbors, naive Bayes, and a voting classifier that combines the predictions of the other three models.
@@ -34,3 +35,12 @@ The script retrieves spectral wave data from a specific NOAA buoy in real-time u
 #Known Issues
 
 None known at this time.
+
+
+
+
+![wave_height](https://user-images.githubusercontent.com/81989762/233119310-437a7011-fe9b-4d78-a46b-45fc2bce3427.png)
+This shows the variance of wave heights in meters for the date Wednesday April 19th 2023. This can be useful to see how big/small 
+ocean waves were through out the day. 
+
+
