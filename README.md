@@ -23,12 +23,14 @@ The following packages are required to run this code:
 numpy
 pandas
 matplotlib
-Usage
+
+# Usage
 
 Download the script to your local machine.
 Ensure that the required packages are installed on your machine.
 Run the script with live_bouy.py
-How It Works
+
+# How It Works
 
 The script retrieves spectral wave data from a specific NOAA buoy in real-time using an HTTP request. It then processes and cleans the data, creates a Pandas DataFrame, and plots the wave height over time. The script also prints out the ideal conditions for surfing and the current conditions for swell direction, swell period, wind, and wave height. Finally, the script retrieves air temperature data from another NOAA buoy.
 
@@ -36,10 +38,12 @@ The script retrieves spectral wave data from a specific NOAA buoy in real-time u
 
 None known at this time.
 
+
+# Cloning
+git clone https://github.com/MicahHarlan/SurfForecast.git
+
+# Examples of Running it.
 ![wave_height](https://user-images.githubusercontent.com/81989762/233119310-437a7011-fe9b-4d78-a46b-45fc2bce3427.png)
 This shows the variance of wave heights in meters for the date Wednesday April 19th 2023. This can be useful to see how big/small 
 ocean waves were through out the day. 
-
-# Cloning
-git clone 
 
