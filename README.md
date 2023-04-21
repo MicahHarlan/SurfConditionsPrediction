@@ -12,6 +12,11 @@ Finally, the program outputs the mean cross-validation scores for each model, in
 
 This is an ongoing project. I eventually want the model to tell you how clean the waves are going to be. Ex.) "The waves today given x y and z are classified as fair with a height of 2-3ft." The conditions will be based off of surflines ranking for waves, like poor,fair,good and up.
 
+# Purpose of Creating this
+My reasons for creating this is to build an application that is free to use for surfers local to Virginia Beach.
+The app surfline charges 15$ a month for a surf forecast from data that is free to use provided by NOAA. 
+
+
 # LiveBouy 
 Description
 
