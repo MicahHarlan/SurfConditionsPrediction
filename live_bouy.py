@@ -40,11 +40,12 @@ closest_time_row = df_today.iloc[(df_today['datetime'] - time).abs().argsort()]
 closest_time_row = closest_time_row.iloc[0]
 
 #PLOTTING WAVES 
-plt.plot(df_today['datetime'], df_today['WVHT'])
-plt.xlabel('Date and Time')
-plt.ylabel('Wave Height (m)')
-plt.title(f'Wave Height {today}')
-plt.show()
+#plt.plot(df_today['datetime'], df_today['WVHT'])
+#plt.xlabel('Date and Time')
+#plt.ylabel('Wave Height (m)')
+#plt.title(f'Wave Height {today}')
+#plt.show()
+
 print(f"DATE: {today}")
 print("IDEAL CONDITIONS") 
 print("SWELL DIR: SE or E")
@@ -55,7 +56,36 @@ print(f"SWELL DIR: {closest_time_row['SwD']}")
 print(f"SWEll PERIOD: {closest_time_row['SwP']}")
 print(f"WIND:{closest_time_row['WWD']}")
 print(f"HEIGHT: {closest_time_row['WVHT']}")
-print("STILL NEED AIR TEMP, WATER TEMP, and TIDE")
+
+
+
+
+##TIDE START
+url = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
+
+# Station ID and date range for water level data
+station_id = "8638901"
+# Query parameters for the API request
+params = { 
+    "product": "water_level",
+    "application": "NOS.COOPS.TAC.WL",
+	"date":"latest",
+    "datum": "MLLW",
+    "station": station_id,
+    "time_zone": "lst",
+    "units": "english",
+    "format": "json"
+}
+
+# Send the API request and get the response
+response = requests.get(url, params=params)
+
+# Print the response content
+tide = json.loads(response.content)
+tide = tide.get('data')[0].get('v')
+#TIDE END
+print(f"TIDE IS BASED OFF OF THE CHESAPEAKE BAY BRIDGE TUNNEL")
+print(f"TIDE LEVEL: {tide}m")
 
 #GETTING AIR TEMP
 url = "https://www.ndbc.noaa.gov/data/realtime2/CHYV2.txt"
@@ -70,6 +100,6 @@ for l in data:
     l = l.replace("   "," ")
     new_data.append(l.replace("  "," "))
 waves = np.array(new_data)
-
+#YY  MM DD hh mm WDIR WSPD GST  WVHT   DPD   APD MWD   PRES  ATMP  WTMP  DEWP  VIS PTDY  TIDE
 
 
