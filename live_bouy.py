@@ -5,6 +5,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests
 import json
+np.set_printoptions(suppress=True)
+
 """
 This file gets current data from NOAA.
 The data is spectral wave data from the bouy near my surf spot.
@@ -32,19 +34,18 @@ today = pd.Timestamp.now().date()
 mask = df["datetime"].dt.date == today
 df_today = df.loc[mask]
 
-
-
 time = pd.Timestamp.now()
-
 closest_time_row = df_today.iloc[(df_today['datetime'] - time).abs().argsort()]
 closest_time_row = closest_time_row.iloc[0]
 
 #PLOTTING WAVES 
-#plt.plot(df_today['datetime'], df_today['WVHT'])
-#plt.xlabel('Date and Time')
-#plt.ylabel('Wave Height (m)')
-#plt.title(f'Wave Height {today}')
-#plt.show()
+figure, ax = plt.subplots(2)
+
+ax[0].plot(df_today['datetime'], df_today['WVHT'])
+ax[0].set_xlabel('Date and Time')
+ax[0].set_ylabel('Wave Height (m)')
+ax[0].set_title(f'Wave Height {today}')
+
 
 print(f"DATE: {today}")
 print("IDEAL CONDITIONS") 
@@ -53,53 +54,66 @@ print("SWELL PERIOD: > 8 seconds")
 print("WIND: SW, WSW, and or W")
 print("-------------")
 print(f"SWELL DIR: {closest_time_row['SwD']}")
-print(f"SWEll PERIOD: {closest_time_row['SwP']}")
-print(f"WIND:{closest_time_row['WWD']}")
+print(f"SWEll PERIOD: {closest_time_row['SwP']} seconds")
+print(f"WIND: {closest_time_row['WWD']}")
 print(f"HEIGHT: {closest_time_row['WVHT']}")
 
 
+#TIDE START
 
-
-##TIDE START
-url = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
-
-# Station ID and date range for water level data
-station_id = "8638901"
-# Query parameters for the API request
-params = { 
-    "product": "water_level",
-    "application": "NOS.COOPS.TAC.WL",
-	"date":"latest",
-    "datum": "MLLW",
-    "station": station_id,
-    "time_zone": "lst",
-    "units": "english",
-    "format": "json"
+url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter'
+params = {
+    'station': '8638610', # station ID for Cape Henry Lighthouse
+    'product': 'water_level',
+    'begin_date': pd.Timestamp.now().floor('D').strftime('%Y%m%d'), # start date (today)
+    'end_date': pd.Timestamp.now().strftime('%Y%m%d'), # end date (today)
+    'datum': 'MLLW', # reference datum
+    'units': 'english',
+    'time_zone': 'lst_ldt',
+    'format': 'json'
 }
 
-# Send the API request and get the response
 response = requests.get(url, params=params)
-
-# Print the response content
-tide = json.loads(response.content)
-tide = tide.get('data')[0].get('v')
+data = response.json()['data']
+df = pd.DataFrame(data)
+df['t'] = pd.to_datetime(df['t'])
+#df = df.set_index('t')
+df['v'] = pd.to_numeric(df['v'])
+df['t'] = pd.to_datetime(df['t'], format='%Y-%m-%d %I:%M%p')
+# plot the tide data
+ax[0].plot(df['t'], df['v'])
+ax[0].set_xticks(pd.date_range(start=df['t'].iloc[0], end=df['t'].iloc[-1], freq='60min'),
+           pd.date_range(start=df['t'].iloc[0], end=df['t'].iloc[-1], freq='60min').strftime('%I:%M%p'))
+#           rotation=45, ha='right')
+ax[0].set_xlabel('Time')
+ax[0].set_ylabel('Tide Height (m)')
+ax[0].set_title('Tide Graph')
 #TIDE END
-print(f"TIDE IS BASED OFF OF THE CHESAPEAKE BAY BRIDGE TUNNEL")
-print(f"TIDE LEVEL: {tide}m")
 
-#GETTING AIR TEMP
-url = "https://www.ndbc.noaa.gov/data/realtime2/CHYV2.txt"
-response = urllib.request.urlopen(url)
-data = np.loadtxt(response,delimiter=r'\s+',dtype="str")
-new_data = []
 
-#Cleaning The Data
 
-for l in data:
-    l = l.replace("\n","")
-    l = l.replace("   "," ")
-    new_data.append(l.replace("  "," "))
-waves = np.array(new_data)
-#YY  MM DD hh mm WDIR WSPD GST  WVHT   DPD   APD MWD   PRES  ATMP  WTMP  DEWP  VIS PTDY  TIDE
+
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

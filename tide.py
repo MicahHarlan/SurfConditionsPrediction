@@ -1,25 +1,39 @@
 import requests
-import json
 import pandas as pd
-
-# Define the API endpoint
-endpoint = 'https://api.tidesandcurrents.noaa.gov/api/datagetter'
-
-# Set the request parameters
+import matplotlib.pyplot as plt
+import numpy as np
+np.set_printoptions(suppress=True)
+url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter'
 params = {
+    'station': '8638610', # station ID for Cape Henry Lighthouse
     'product': 'water_level',
-    'application': 'PRODUCT_SPECIFIC_TOOL',
-    'datum': 'STND',
+    'begin_date': pd.Timestamp.now().floor('D').strftime('%Y%m%d'), # start date (today)
+    'end_date': pd.Timestamp.now().strftime('%Y%m%d'), # end date (today)
+    'datum': 'MLLW', # reference datum
     'units': 'english',
     'time_zone': 'lst_ldt',
-    'format': 'json',
-    'station': '8638863',  # Virginia Beach station ID
-    'date': 'latest'
+    'format': 'json'
 }
 
-# Make the request and extract the water level
-response = requests.get(endpoint, params=params)
-data = json.loads(response.content)
-water_level = data['data'][0]['v']
-print(f"Current water level: {water_level} feet")
+response = requests.get(url, params=params)
+data = response.json()['data']
+df = pd.DataFrame(data)
+df['t'] = pd.to_datetime(df['t'])
+#df = df.set_index('t')
+df['v'] = pd.to_numeric(df['v'])
 
+df['t'] = pd.to_datetime(df['t'], format='%Y-%m-%d %I:%M%p')
+
+
+
+# plot the tide data
+plt.plot(df['t'], df['v'])
+
+plt.xticks(pd.date_range(start=df['t'].iloc[0], end=df['t'].iloc[-1], freq='60min'), 
+           pd.date_range(start=df['t'].iloc[0], end=df['t'].iloc[-1], freq='60min').strftime('%I:%M%p'), 
+           rotation=45, ha='right')
+
+plt.xlabel('Time')
+plt.ylabel('Tide Height (m)')
+plt.title('Tide Graph')
+plt.show()
