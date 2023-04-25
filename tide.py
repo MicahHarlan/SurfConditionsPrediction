@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-np.set_printoptions(suppress=True)
+
 url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter'
 params = {
     'station': '8638610', # station ID for Cape Henry Lighthouse
