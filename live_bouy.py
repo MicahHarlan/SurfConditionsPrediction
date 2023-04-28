@@ -64,7 +64,7 @@ print(f"HEIGHT: {closest_time_row['WVHT']}")
 
 url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter'
 params = {
-    'station': '8638610', # station ID for Cape Henry Lighthouse
+    'station':'8638610',#'8638610', # station ID for Cape Henry Lighthouse
     'product': 'predictions',
     'begin_date': pd.Timestamp.now().floor('D').strftime('%Y%m%d'), # start date (today)
     'end_date': pd.Timestamp.now().strftime('%Y%m%d'), # end date (today)
@@ -81,12 +81,11 @@ df = pd.DataFrame(data)
 df['t'] = pd.to_datetime(df['t'])
 df['v'] = pd.to_numeric(df['v'])
 df['t'] = pd.to_datetime(df['t'], format='%Y-%m-%d %I:%M%p')
-
-
-
 plt.xticks(pd.date_range(start=df['t'].iloc[0], end=df['t'].iloc[-1], freq='60min'),
 		pd.date_range(start=df['t'].iloc[0], end=df['t'].iloc[-1], freq='60min').strftime('%I:%M%p')
 		,rotation=45, ha='right')
+
+
 
 
 # plot the tide data
@@ -114,31 +113,5 @@ plt.ylabel('Tide Height (m)')
 plt.title(f'Tide For Virginia Beach {today}')
 
 
-
-
-
-
 plt.show()
 #TIDE END
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
